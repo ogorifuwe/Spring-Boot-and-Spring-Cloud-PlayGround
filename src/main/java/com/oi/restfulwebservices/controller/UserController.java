@@ -2,7 +2,7 @@ package com.oi.restfulwebservices.controller;
 
 import com.oi.restfulwebservices.Model.User;
 import com.oi.restfulwebservices.dao.UserDaoImpl;
-import com.oi.restfulwebservices.exceptions.UserNotFoundException;
+import com.oi.restfulwebservices.exception.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
