@@ -2,6 +2,7 @@ package com.oi.restfulwebservices.controller;
 
 import com.oi.restfulwebservices.Model.User;
 import com.oi.restfulwebservices.dao.UserDaoImpl;
+import com.oi.restfulwebservices.exceptions.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +24,13 @@ public class UserController {
 
  @GetMapping("/users/{id}")
  public User retrieveUser(@PathVariable int id) {
-    return service.findOne(id);
+    User user = service.findOne(id);
+
+    if (user == null) {
+      throw new UserNotFoundException("User with id - " + id + " is not present");
+    }
+
+    return user;
  }
 
  // input - details of user
