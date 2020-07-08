@@ -27,7 +27,7 @@ public class UserController {
     User user = service.findOne(id);
 
     if (user == null) {
-      throw new UserNotFoundException("User with id - " + id + " is not present");
+      throw new UserNotFoundException("User with id - " + id + " was not found");
     }
 
     return user;
@@ -47,6 +47,16 @@ public class UserController {
             .buildAndExpand(savedUser.getId()).toUri();
 
     return ResponseEntity.created(location).build();
+  }
+
+  @DeleteMapping("/users/{id}")
+  public void deleteUser(@PathVariable int id) {
+
+    User user = service.deleteUserById(id);
+
+    if (user == null) {
+      throw new UserNotFoundException("User with id - " + id + " was not found");
+    }
   }
 
 }
