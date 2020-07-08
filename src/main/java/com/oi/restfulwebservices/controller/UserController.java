@@ -4,10 +4,13 @@ import com.oi.restfulwebservices.Model.User;
 import com.oi.restfulwebservices.dao.UserDaoImpl;
 import com.oi.restfulwebservices.exception.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
@@ -22,21 +25,29 @@ public class UserController {
     return service.findAll();
  }
 
+ // implement HATEOAS - Hypermedia As The Engine Of Application State
  @GetMapping("/users/{id}")
- public User retrieveUser(@PathVariable int id) {
+ public EntityModel<User> retrieveUser(@PathVariable int id) {
     User user = service.findOne(id);
 
     if (user == null) {
       throw new UserNotFoundException("User with id - " + id + " was not found");
     }
 
-    return user;
+    // HATEOAS for retrieve all users
+    EntityModel<User> resource = EntityModel.of(user);
+    WebMvcLinkBuilder linkTo =
+           WebMvcLinkBuilder
+                   .linkTo(WebMvcLinkBuilder.methodOn(this.getClass()).retrieveAllUsers());
+
+    resource.add(linkTo.withRel("all-users"));
+    return resource;
  }
 
  // input - details of user
   // output - CREATED (201) & the URI to Resource
  @PostMapping("/users")
- public ResponseEntity<Object> createUser(@RequestBody User user) {
+ public ResponseEntity<Object> createUser(@RequestBody @Valid User user) {
     User savedUser = service.save(user);
 
     // CREATED
