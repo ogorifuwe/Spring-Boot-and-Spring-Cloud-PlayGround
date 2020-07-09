@@ -1,26 +1,26 @@
 package com.oi.restfulwebservices.Model;
 /**
- * Demonstrates Static Filtering of iVars using @JsonIgnore annotation
+ * Used to demonstrates Dynamic Filtering of iVars using
+ * @See FilteringController.class for implementation
  */
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonFilter;
 import lombok.*;
 
+@JsonFilter("StudentFilter")
 @NoArgsConstructor
 @RequiredArgsConstructor
 @Setter
 @Getter
 @ToString
-public class Student {
+public class Student2 {
 
   @NonNull
   private int id;
 
-  @JsonIgnore
   @NonNull
   private String name;
 
-  @JsonIgnore
   @NonNull
   private String major;
 }
