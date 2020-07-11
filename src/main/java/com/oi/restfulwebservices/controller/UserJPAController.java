@@ -5,6 +5,8 @@ import com.oi.restfulwebservices.Model.User;
 import com.oi.restfulwebservices.dao.PostRepository;
 import com.oi.restfulwebservices.dao.UserRepository;
 import com.oi.restfulwebservices.exception.UserNotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
@@ -25,6 +27,8 @@ public class UserJPAController {
 
   @Autowired
   private PostRepository postRepository;
+
+  private static final Logger LOGGER = LoggerFactory.getLogger(UserJPAController.class);
 
   @GetMapping("/jpa/users")
  public List<User> retrieveAllUsers() {
@@ -80,9 +84,7 @@ public class UserJPAController {
       throw new UserNotFoundException("User with id - " + id + " was not found");
     }
 
-    List<Post> posts = userOptional.get().getPosts();
-    System.out.println("===========> "+posts);
-    return posts;
+    return userOptional.get().getPosts();
   }
 
   @PostMapping("/jpa/users/{id}/posts")
