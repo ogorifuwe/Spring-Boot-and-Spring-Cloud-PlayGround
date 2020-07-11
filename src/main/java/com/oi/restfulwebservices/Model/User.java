@@ -42,4 +42,16 @@ public class User {
   @NonNull
   private List<Post> posts;
 
+  @NonNull
+  private Integer id;
+
+  @NonNull
+  @Size(min = 2, message = "Name should have at least 2 characters")
+  private String name;
+
+
+  @NonNull
+  @Past
+  private Date birthDate;
+  
 }
